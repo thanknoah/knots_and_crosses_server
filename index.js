@@ -1,26 +1,13 @@
 // Variables
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-let cors = require("cors")
+const cors = require('cors')
 
 // Intialization
 const httpServer = createServer()
-const io = new Server(httpServer, {
-  cors: {
-    origin: '*',
-    methods: [
-       'GET',
-       'POST'
-    ]
-  }
-})
+const io = new Server(httpServer)
 
-io.use(
-   cors({
-      origin: "*"
-   })
-)
-
+io.use(cors())
 
 class initalizeRoomService {
    constructor(rooms) {
