@@ -1,6 +1,7 @@
 // Variables
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+let cors = require("cors")
 
 // Intialization
 const httpServer = createServer()
@@ -13,6 +14,12 @@ const io = new Server(httpServer, {
     ]
   }
 })
+
+io.use(
+   cors({
+      origin: "*"
+   })
+)
 
 
 class initalizeRoomService {
@@ -99,8 +106,10 @@ class initalizeRoomService {
           if (room.id == id) {
               room.nicknames.forEach((element, x) => {
                   if (element == name) {
-                     console.log(element.nicknames);
-                     room.nicknames.splice(x);
+                     const index = room.nicknames.indexOf(name);
+                     if (index > -1) { 
+                        room.nicknames.splice(index, 1);
+                      }
                   }
               });
           }
@@ -291,7 +300,6 @@ io.on("connection", (socket) => {
             io.to(id).emit("playerListUpdate", rooms.getUsers(id));
             io.to(id).emit("boardUpdate", properties.board)
 
-            console.log(properties.board);
             console.log(rooms.getUsers(id));
 
             setTimeout(() => {
