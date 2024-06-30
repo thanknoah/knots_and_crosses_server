@@ -1,9 +1,11 @@
-const io = require("socket.io")(3000, {
-  cors: {
-    origin: ["*"],
-  },
+const http = require('http').createServer();
+
+const io = require("socket.io")(http, {
+    cors: { origin: "*" }
 });
 
 io.on("connection", (socket) => {
-  console.log(socket.id);
+    console.log(socket.id);
 });
+
+http.listen(8080)
